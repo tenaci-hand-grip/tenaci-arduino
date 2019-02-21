@@ -2,8 +2,10 @@
 #include <semphr.h>
 #include <Servo.h>
 #include <Stepper.h>
+#include <SimpleKalmanFilter.h>
 #include "tasks.h"
 #include "pins.h"
+#include "sensor-constants.h"
 
 #define STEPPER_STEPS 200
 
@@ -12,26 +14,63 @@ Servo servo;
 Stepper stepper(STEPPER_STEPS, STEPPER_1A_PIN, STEPPER_2A_PIN, STEPPER_3A_PIN, STEPPER_4A_PIN);
 
 // values from flex and force sensors
+
+// degrees
 double thumb_flex_value;
 double index_flex_value;
 double middle_flex_value;
 double ring_flex_value;
 double pinky_flex_value;
 
+// grams
 double thumb_force_value;
 double index_force_value;
 
 // finger/thumb structs
-finger_struct thumb_flex_t = {FLEX_THUMB_PIN, &thumb_flex_value};
-finger_struct index_flex_t = {FLEX_INDEX_PIN, &index_flex_value};
-finger_struct middle_flex_t = {FLEX_MIDDLE_PIN, &middle_flex_value};
-finger_struct ring_flex_t = {FLEX_RING_PIN, &ring_flex_value};
-finger_struct pinky_flex_t = {FLEX_PINKY_PIN, &pinky_flex_value};
 
-finger_struct thumb_force_t = {FORCE_THUMB_PIN, &thumb_force_value};
-finger_struct index_force_t = {FORCE_INDEX_PIN, &index_force_value};
+// flex sensor structs
+finger_sensor_struct thumb_flex_t = {
+        .pin = FLEX_THUMB_PIN,
+        .pvalue = &thumb_flex_value,
+        .resistance = M_47K_RES_THUMB,
+        .resistance_straight = M_THUMB_FLEX_STRAIGHT,
+        .resistance_bent = M_THUMB_FLEX_BENT};
+finger_sensor_struct index_flex_t = {
+        .pin = FLEX_INDEX_PIN,
+        .pvalue = &index_flex_value,
+        .resistance = M_47K_RES_INDEX,
+        .resistance_straight = M_INDEX_FLEX_STRAIGHT,
+        .resistance_bent = M_INDEX_FLEX_BENT};
+finger_sensor_struct middle_flex_t = {
+        .pin = FLEX_MIDDLE_PIN,
+        .pvalue = &middle_flex_value,
+        .resistance = M_47K_RES_MIDDLE,
+        .resistance_straight = M_MIDDLE_FLEX_STRAIGHT,
+        .resistance_bent = M_MIDDLE_FLEX_BENT};
+finger_sensor_struct ring_flex_t = {
+        .pin = FLEX_RING_PIN,
+        .pvalue = &ring_flex_value,
+        .resistance = M_47K_RES_RING,
+        .resistance_straight = M_RING_FLEX_STRAIGHT,
+        .resistance_bent = M_RING_FLEX_BENT};
+finger_sensor_struct pinky_flex_t = {
+        .pin = FLEX_PINKY_PIN,
+        .pvalue = &pinky_flex_value,
+        .resistance = M_47K_RES_PINKY,
+        .resistance_straight = M_PINKY_FLEX_STRAIGHT,
+        .resistance_bent = M_PINKY_FLEX_BENT};
 
-// the setup function runs once when you press reset or power the board
+// force sensor structs
+finger_sensor_struct thumb_force_t = {
+        .pin = FORCE_THUMB_PIN,
+        .pvalue = &thumb_force_value,
+        .resistance = M_3K_RES_THUMB};
+finger_sensor_struct index_force_t = {
+        .pin = FORCE_INDEX_PIN,
+        .pvalue = &index_force_value,
+        .resistance = M_3K_RES_INDEX};
+
+
 void setup()
 {
     // initialize serial communication at 9600 bits per second:

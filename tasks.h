@@ -10,10 +10,13 @@ void TaskReadForce(void *);
 
 void TaskReadSensitivity(void *);
 
-struct finger_struct
+struct finger_sensor_struct
 {
     int pin;
-    double *pvalue;
+    double *pvalue; // pointer to where value is stored
+    double resistance; // resistance of voltage divider resistor
+    double resistance_straight; // resistance of straight flex sensor
+    double resistance_bent; // resistance of bent (90 degrees) flex sensor
 };
 
-#endif
+#endif // TENACI_TASKS_H

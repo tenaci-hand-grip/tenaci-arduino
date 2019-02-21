@@ -1,5 +1,5 @@
-#ifndef PINS_H
-#define PINS_H
+#ifndef TENACI_PINS_H
+#define TENACI_PINS_H
 
 // pin layout for flex sensors
 #define FLEX_THUMB_PIN A1
@@ -21,4 +21,4 @@
 // pin layout for grip strength selection
 #define FORCE_SELECTOR A0
 
-#endif
+#endif // TENACI_PINS_H
