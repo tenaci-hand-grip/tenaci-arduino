@@ -2,26 +2,13 @@
 #include <Arduino_FreeRTOS.h>
 #include <semphr.h>
 #include <Servo.h>
+#include <Stepper.h>
 #include "tasks.h"
+#include "pins.h"
 
 extern Servo servo;
 extern SemaphoreHandle_t xSerialSemaphore;
 
-void TaskBlink(void *pvParameters) // This is a task.
-{
-    (void)pvParameters;
-
-    // initialize digital LED_BUILTIN on pin 13 as an output.
-    pinMode(LED_BUILTIN, OUTPUT);
-
-    for (;;) // A Task shall never return or exit.
-    {
-        digitalWrite(LED_BUILTIN, HIGH);      // turn the LED on (HIGH is the voltage level)
-        vTaskDelay(100 / portTICK_PERIOD_MS); // wait for one second
-        digitalWrite(LED_BUILTIN, LOW);       // turn the LED off by making the voltage LOW
-        vTaskDelay(1000 / portTICK_PERIOD_MS); // wait for one second
-    }
-}
 
 void TaskAnalogRead(void *pvParameters) // This is a task.
 {
@@ -74,21 +61,30 @@ void TaskSerialWrite(void *pvParameters) // This is a task.
     }
 }
 
-void TaskServoSweep(void *pvParameters) // This is a task.
+void TaskReadFlex(void *pvParameters)
 {
-    (void)pvParameters;
+    finger_struct *finger = (finger_struct *)pvParameters;
+    pinMode(finger->pin, INPUT);
+    int raw_value;
 
-    int pos;
-    for (;;) // A Task shall never return or exit.
+    for (;;)
     {
-        for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
-            // in steps of 1 degree
-            servo.write(pos);              // tell servo to go to position in variable 'pos'
-            vTaskDelay(15 / portTICK_PERIOD_MS); // wait for one second
-        }
-        for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
-            servo.write(pos);              // tell servo to go to position in variable 'pos'
-            vTaskDelay(15 / portTICK_PERIOD_MS); // wait for one second
-        }
+        raw_value = analogRead(finger->pin);
+        // TODO: value processing
+        *(finger->pvalue) = 0;
+    }
+}
+
+void TaskReadForce(void *pvParameters)
+{
+    finger_struct *finger = (finger_struct *)pvParameters;
+    pinMode(finger->pin, INPUT);
+    int raw_value;
+
+    for (;;)
+    {
+        raw_value = analogRead(finger->pin);
+        // TODO: value processing
+        *(finger->pvalue) = 0;
     }
 }
