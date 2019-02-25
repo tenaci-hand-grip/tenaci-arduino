@@ -1,6 +1,14 @@
 #ifndef TENACI_SENSOR_CONSTANTS_H
 #define TENACI_SENSOR_CONSTANTS_H
 
+// min/max flex values (degrees)
+#define FLEX_MIN 0
+#define FLEX_MAX 100
+
+// min/max force values (g)
+#define FORCE_MIN 0
+#define FORCE_MAX 10000
+
 // 5V line
 #define M_VCC 5 // measured voltage of 5V line
 
