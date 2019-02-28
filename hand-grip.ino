@@ -1,17 +1,14 @@
 #include <Arduino_FreeRTOS.h>
 #include <semphr.h>
 #include <Servo.h>
-#include <Stepper.h>
 #include <SimpleKalmanFilter.h>
 #include "tasks.h"
 #include "pins.h"
 #include "sensor-constants.h"
 
-#define STEPPER_STEPS 200
 
 SemaphoreHandle_t xSerialSemaphore;
 Servo servo;
-Stepper stepper(STEPPER_STEPS, STEPPER_1A_PIN, STEPPER_2A_PIN, STEPPER_3A_PIN, STEPPER_4A_PIN);
 
 // values from flex and force sensors
 
@@ -75,6 +72,9 @@ void setup()
 {
     // initialize serial communication at 9600 bits per second:
     Serial.begin(9600);
+
+    // attach servo
+    servo.attach(SERVO_PIN);
 
     while (!Serial)
     {

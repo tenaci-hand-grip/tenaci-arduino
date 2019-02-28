@@ -12,12 +12,6 @@
 #define FORCE_THUMB_PIN A6
 #define FORCE_INDEX_PIN A7
 
-// pin layout for stepper motor
-#define STEPPER_1A_PIN 10
-#define STEPPER_2A_PIN 9
-#define STEPPER_3A_PIN 8
-#define STEPPER_4A_PIN 7
-
 // pin layout for grip strength selection
 #define FORCE_SELECTOR A0
 

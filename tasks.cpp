@@ -2,7 +2,6 @@
 #include <Arduino_FreeRTOS.h>
 #include <semphr.h>
 #include <Servo.h>
-#include <Stepper.h>
 #include <SimpleKalmanFilter.h>
 #include "tasks.h"
 #include "pins.h"
