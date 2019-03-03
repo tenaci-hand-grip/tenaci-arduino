@@ -7,39 +7,65 @@
 #include "pins.h"
 #include "sensor-constants.h"
 
-extern Servo servo;
+#define MAX_INSTRUCTION_BUFFER_SIZE 8
+
 extern SemaphoreHandle_t xSerialSemaphore;
 
+extern Servo servo;
 
-void TaskAnalogRead(void *pvParameters) // This is a task.
+void TaskSerialRead(void *pvParameters)
 {
     (void)pvParameters;
 
-    for (;;)
-    {
-        // read the input on analog pin 0:
-        int sensorValue = analogRead(A0);
-        // print out the value you read:
-        Serial.println(sensorValue);
-        vTaskDelay(100); // one tick delay (15ms) in between reads for stability
-    }
-}
-
-void TaskSerialRead(void *pvParameters) // This is a task.
-{
-    (void)pvParameters;
+    extern String serial_instruction;
 
     for (;;) // A Task shall never return or exit.
     {
-        if (xSerialSemaphore != NULL)
+        int incoming_byte = 0;
+        char buffer[MAX_INSTRUCTION_BUFFER_SIZE];
+        int count = 0;
+
+        bool error_flag = false;
+
+        /*
+        if (Serial.available() > 0)
         {
-            if (xSemaphoreTake(xSerialSemaphore, (TickType_t)5) == pdTRUE)
+            while (Serial.available())
             {
-                Serial.println("hello!");
-                xSemaphoreGive( xSerialSemaphore ); // Now free or "Give" the Serial Port for others.
+                incoming_byte = Serial.read();
+                delay(5);
+
+                // reset buffer if its size reaches the max size for the array
+                if (count >= MAX_INSTRUCTION_BUFFER_SIZE - 1)
+                {
+                    count = 0;
+                    memset(&buffer[0], 0, sizeof(buffer));
+                    error_flag = true;
+                    break;
+                }
+
+                // add one char at a time to char array buffer
+                buffer[count] = char(incoming_byte);
+                count++;
+            }
+
+            if (!error_flag)
+            {
+                buffer[count] = '\0';
+
+                serial_instruction = String(buffer);
+
+                // reset buffer
+                memset(&buffer[0], 0, sizeof(buffer));
+                count = 0;
             }
         }
-        vTaskDelay(1); // wait for one tick (15ms)
+        */
+        //serial_instruction = "asdf";
+        if (Serial.available() > 0)
+            serial_instruction = Serial.readString();
+
+        vTaskDelay(10 / portTICK_PERIOD_MS); // wait for one tick (15ms)
     }
 }
 
@@ -47,17 +73,74 @@ void TaskSerialWrite(void *pvParameters) // This is a task.
 {
     (char *)pvParameters;
 
+    extern String serial_instruction;
+
+    // values from flex and force sensors
+
+    // degrees
+    //extern double thumb_flex_value;
+    extern double index_flex_value;
+    // extern double middle_flex_value;
+    // extern double ring_flex_value;
+    extern double pinky_flex_value;
+
+    // grams
+    extern double thumb_force_value;
+    //extern double index_force_value;
+
+    // extern volatile uint8_t encoder_cw;
+    // extern volatile uint8_t encoder_ccw;
+
     for (;;) // A Task shall never return or exit.
     {
         if (xSerialSemaphore != NULL)
         {
-            // If the semaphore is not available, wait 5 ticks of the Scheduler to see if it becomes free.
-            if (xSemaphoreTake(xSerialSemaphore, (TickType_t)5) == pdTRUE)
+            if (xSemaphoreTake(xSerialSemaphore, (TickType_t)0) == pdTRUE)
             {
-                Serial.println("hello!");
-                xSemaphoreGive( xSerialSemaphore ); // Now free or "Give" the Serial Port for others.
+                // Serial.print("serial_instruction: [");
+                // Serial.print(serial_instruction);
+                // Serial.println("]");
+
+                // Serial.print("thumb_flex_value: [");
+                // Serial.print(thumb_flex_value);
+                // Serial.println("]");
+
+                Serial.print("index_flex_value: [");
+                Serial.print(index_flex_value);
+                Serial.println("]");
+
+                // Serial.print("middle_flex_value: [");
+                // Serial.print(middle_flex_value);
+                // Serial.println("]");
+
+                Serial.print("pinky_flex_value: [");
+                Serial.print(pinky_flex_value);
+                Serial.println("]");
+
+                Serial.print("thumb_force_value: [");
+                Serial.print(thumb_force_value);
+                Serial.println("]");
+
+                // Serial.print("index_force_value: [");
+                // Serial.print(index_force_value);
+                // Serial.println("]");
+
+                // Serial.print("cc: ");
+                // Serial.println(encoder_cw);
+
+                // Serial.print("ccw: ");
+                // Serial.println(encoder_ccw);
+
+                xSemaphoreGive(xSerialSemaphore);
             }
         }
+        else
+        {
+            xSerialSemaphore = xSemaphoreCreateMutex();
+            if (xSerialSemaphore != NULL)
+                xSemaphoreGive(xSerialSemaphore);
+        }
+
         vTaskDelay(1000 / portTICK_PERIOD_MS); // wait for one second
     }
 }

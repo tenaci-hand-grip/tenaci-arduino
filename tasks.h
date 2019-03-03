@@ -1,7 +1,6 @@
 #ifndef TENACI_TASKS_H
 #define TENACI_TASKS_H
 
-void TaskAnalogRead(void *);
 void TaskSerialRead(void *);
 void TaskSerialWrite(void *);
 
