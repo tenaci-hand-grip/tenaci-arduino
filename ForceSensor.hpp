@@ -1,0 +1,7 @@
+#ifndef TENACI_FORCE_SENSOR_H
+#define TENACI_FORCE_SENSOR_H
+
+
+
+
+#endif // TENACI_FORCE_SENSOR_H
