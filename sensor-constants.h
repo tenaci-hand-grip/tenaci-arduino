@@ -45,52 +45,5 @@
 // Force sensor - index
 #define M_3K_RES_INDEX 3300.0 // measured resistance of 3.3K resistor
 
-/*
-
-
-// finger/thumb structs
-
-// flex sensor structs
-finger_sensor_struct thumb_flex_t = {
-        .pin = FLEX_THUMB_PIN,
-        .pvalue = &thumb_flex_value,
-        .resistance = M_47K_RES_THUMB,
-        .resistance_straight = M_THUMB_FLEX_STRAIGHT,
-        .resistance_bent = M_THUMB_FLEX_BENT};
-finger_sensor_struct index_flex_t = {
-        .pin = FLEX_INDEX_PIN,
-        .pvalue = &index_flex_value,
-        .resistance = M_47K_RES_INDEX,
-        .resistance_straight = M_INDEX_FLEX_STRAIGHT,
-        .resistance_bent = M_INDEX_FLEX_BENT};
-finger_sensor_struct middle_flex_t = {
-        .pin = FLEX_MIDDLE_PIN,
-        .pvalue = &middle_flex_value,
-        .resistance = M_47K_RES_MIDDLE,
-        .resistance_straight = M_MIDDLE_FLEX_STRAIGHT,
-        .resistance_bent = M_MIDDLE_FLEX_BENT};
-finger_sensor_struct ring_flex_t = {
-        .pin = FLEX_RING_PIN,
-        .pvalue = &ring_flex_value,
-        .resistance = M_47K_RES_RING,
-        .resistance_straight = M_RING_FLEX_STRAIGHT,
-        .resistance_bent = M_RING_FLEX_BENT};
-finger_sensor_struct pinky_flex_t = {
-        .pin = FLEX_PINKY_PIN,
-        .pvalue = &pinky_flex_value,
-        .resistance = M_47K_RES_PINKY,
-        .resistance_straight = M_PINKY_FLEX_STRAIGHT,
-        .resistance_bent = M_PINKY_FLEX_BENT};
-
-// force sensor structs
-finger_sensor_struct thumb_force_t = {
-        .pin = FORCE_THUMB_PIN,
-        .pvalue = &thumb_force_value,
-        .resistance = M_3K_RES_THUMB};
-finger_sensor_struct index_force_t = {
-        .pin = FORCE_INDEX_PIN,
-        .pvalue = &index_force_value,
-        .resistance = M_3K_RES_INDEX};
-*/
 
 #endif // TENACI_SENSOR_CONSTANTS_H

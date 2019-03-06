@@ -1,12 +1,18 @@
-#ifndef TENACI_FORCE_SENSOR_H
-#define TENACI_FORCE_SENSOR_H
+#ifndef TENACI_FLEX_SENSOR_H
+#define TENACI_FLEX_SENSOR_H
 
 #include "Sensor.hpp"
 
-class ForceSensor : public Sensor
+class FlexSensor : public Sensor
 {
-
+public:
+    FlexSensor(struct sensor_data_t *sensor_info);
+    void read();
+protected:
+    double resistance_straight;
+    double resistance_bent;
+    double resistor_resistance;
 };
 
 
-#endif // TENACI_FORCE_SENSOR_H
+#endif // TENACI_FLEX_SENSOR_H
