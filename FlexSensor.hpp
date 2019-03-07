@@ -9,9 +9,9 @@ public:
     FlexSensor(struct sensor_data_t *sensor_info);
     void read();
 protected:
-    double resistance_straight;
-    double resistance_bent;
-    double resistor_resistance;
+    float resistance_straight;
+    float resistance_bent;
+    float resistor_resistance;
 };
 
 

@@ -13,14 +13,14 @@ void FlexSensor::read()
 
     // Read the ADC, and calculate voltage and resistance from it
     int raw_adc_reading = analogRead(pin);
-    double flex_voltage = raw_adc_reading * M_VCC / 1023.0;
-    double flex_resistance = resistor_resistance * (M_VCC / flex_voltage - 1.0);
+    float flex_voltage = raw_adc_reading * M_VCC / 1023.0;
+    float flex_resistance = resistor_resistance * (M_VCC / flex_voltage - 1.0);
 
     // Use the calculated resistance to estimate the sensor's
     // bend angle:
-    double angle = map(flex_resistance, resistance_straight, resistance_bent, 0, 90.0);
+    float angle = map(flex_resistance, resistance_straight, resistance_bent, 0, 90.0);
 
-    double processed = kalmanFilter.updateEstimate(angle);
+    float processed = kalmanFilter.updateEstimate(angle);
 
     *value = processed;
 }

@@ -8,10 +8,10 @@
 struct sensor_data_t
 {
     int pin;
-    double *pvalue; // pointer to where value is stored
-    double resistor_resistance; // resistance of voltage divider resistor
-    double resistance_straight; // resistance of straight flex sensor
-    double resistance_bent; // resistance of bent (90 degrees) flex sensor
+    float *pvalue; // pointer to where value is stored
+    float resistor_resistance; // resistance of voltage divider resistor
+    float resistance_straight; // resistance of straight flex sensor
+    float resistance_bent; // resistance of bent (90 degrees) flex sensor
 };
 
 class Sensor
@@ -23,7 +23,7 @@ public:
 protected:
     SimpleKalmanFilter kalmanFilter;
     int pin;
-    double *value;
+    float *value;
 };
 
 

@@ -9,7 +9,7 @@ public:
     ForceSensor(struct sensor_data_t *sensor_info);
     void read();
 protected:
-    double resistor_resistance;
+    float resistor_resistance;
 };
 
 
