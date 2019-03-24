@@ -1,6 +1,7 @@
 #ifndef TENACI_FUZZY_CONTROLLER_H
 #define TENACI_FUZZY_CONTROLLER_H
 
+#include "Arduino.h"
 #include "Fuzzy.h"
 
 #define INDEX_FLEX_INPUT_INDEX 1
@@ -10,14 +11,6 @@
 #define INDEX_FORCE_INPUT_INDEX 5
 
 #define THUMB_FLEX_OUTPUT_INDEX 1
-
-struct fuzzy_set_t
-{
-    double a;
-    double b;
-    double c;
-    double d;
-};
 
 class FuzzyController
 {
@@ -81,7 +74,8 @@ protected:
     // outputs
     FuzzyOutput *thumb_flex_output;
 
-    // fuzzy rules
+    // antecents
+
     FuzzyRuleAntecedent *ifIndexNotFlexed;
     FuzzyRuleAntecedent *ifIndexPartiallyFlexed;
     FuzzyRuleAntecedent *ifIndexHalfFlexed;
@@ -105,17 +99,25 @@ protected:
     FuzzyRuleAntecedent *ifIndexHighForce;
 
 
-    FuzzyRuleAntecedent *ifIndexNotFlexedANDPinkyNotFlexed;
-    FuzzyRuleAntecedent *ifThumbNoForceANDIndexNoForce;
-    FuzzyRuleAntecedent *ifIndexNotFlexedANDPinkyNotFlexedANDThumbNoForceANDIndexNoForce;
+    // FuzzyRuleAntecedent *ifIndexNotFlexedANDPinkyNotFlexed;
+    // FuzzyRuleAntecedent *ifThumbNoForceANDIndexNoForce;
+    // FuzzyRuleAntecedent *ifIndexNotFlexedANDPinkyNotFlexedANDThumbNoForceANDIndexNoForce;
 
-
+    // consequents
 
     FuzzyRuleConsequent *thenThumbNotFlexed;
     FuzzyRuleConsequent *thenThumbPartiallyFlexed;
     FuzzyRuleConsequent *thenThumbHalfFlexed;
     FuzzyRuleConsequent *thenThumbMostlyFlexed;
     FuzzyRuleConsequent *thenThumbFullyFlexed;
+
+    // fuzzy rules
+
+    FuzzyRule *fuzzyRule1;
+    FuzzyRule *fuzzyRule2;
+    FuzzyRule *fuzzyRule3;
+    FuzzyRule *fuzzyRule4;
+    FuzzyRule *fuzzyRule5;
 };
 
 #endif // TENACI_FUZZY_CONTROLLER_H

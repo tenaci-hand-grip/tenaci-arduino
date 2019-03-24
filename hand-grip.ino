@@ -7,7 +7,6 @@
 #include "FlexSensor.hpp"
 #include "ForceSensor.hpp"
 #include "FuzzyController.hpp"
-#include "SerialCommands.hpp"
 
 #define INIT_TIME 5000
 
@@ -131,33 +130,44 @@ void setup()
     fc = new FuzzyController(&index_flex_value, &middle_flex_value, &pinky_flex_value, &thumb_force_value, &index_force_value);
 }
 
+int loop_counter = 0;
+
 void loop()
 {
-    thumb_flex_sensor->read();
+    servo.write(90);
+
+    // thumb_flex_sensor->read();
     index_flex_sensor->read();
-    middle_flex_sensor->read();
-    pinky_flex_sensor->read();
+    // middle_flex_sensor->read();
+    // pinky_flex_sensor->read();
 
-    thumb_force_sensor->read();
-    index_force_sensor->read();
+    // thumb_force_sensor->read();
+    // index_force_sensor->read();
 
-    fc->getThumbOutput();
+    index_flex_value = loop_counter;
+    loop_counter += 10;
+    if (loop_counter > 100)
+    {
+        loop_counter = 0;
+    }
 
+    float output = fc->getThumbOutput();
 
     if (tenaci_debug)
     {
 
         // Formatted to use Arduino serial plotter
-        Serial.print("TF: "); Serial.print(thumb_flex_value); Serial.print(", "); // Thumb flex
+        // Serial.print("TF: "); Serial.print(thumb_flex_value); Serial.print(", "); // Thumb flex
         Serial.print("IF: "); Serial.print(index_flex_value); Serial.print(", "); // Index flex
-        Serial.print("MF: "); Serial.print(middle_flex_value); Serial.print(", "); // Middle flex
-        Serial.print("PF: "); Serial.print(pinky_flex_value); Serial.print(", "); // Pinky flex
-        Serial.print("TP: "); Serial.print(thumb_force_value); Serial.print(", "); // Thumb force
-        Serial.print("IP: "); Serial.println(index_force_value); // Index force
+        // Serial.print("MF: "); Serial.print(middle_flex_value); Serial.print(", "); // Middle flex
+        // Serial.print("PF: "); Serial.print(pinky_flex_value); Serial.print(", "); // Pinky flex
+        // Serial.print("TP: "); Serial.print(thumb_force_value); Serial.print(", "); // Thumb force
+        // Serial.print("IP: "); Serial.println(index_force_value); // Index force
 
+        Serial.print("TF: "); Serial.print(output); Serial.println();
     }
 
 
 
-    delay(loop_delay);
+    delay(500);
 }
