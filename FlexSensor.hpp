@@ -1,6 +1,7 @@
 #ifndef TENACI_FLEX_SENSOR_H
 #define TENACI_FLEX_SENSOR_H
 
+#include "Arduino.h"
 #include "Sensor.hpp"
 
 class FlexSensor : public Sensor

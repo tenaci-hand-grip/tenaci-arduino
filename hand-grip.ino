@@ -51,6 +51,7 @@ sensor_data_t index_flex_data = {
         M_INDEX_FLEX_STRAIGHT,
         M_INDEX_FLEX_BENT
 };
+/*
 sensor_data_t middle_flex_data = {
         FLEX_MIDDLE_PIN,
         &middle_flex_value,
@@ -58,6 +59,7 @@ sensor_data_t middle_flex_data = {
         M_MIDDLE_FLEX_STRAIGHT,
         M_MIDDLE_FLEX_BENT
 };
+*/
 sensor_data_t pinky_flex_data = {
         FLEX_PINKY_PIN,
         &pinky_flex_value,
@@ -121,20 +123,28 @@ void setup()
 
     thumb_flex_sensor = new FlexSensor(&thumb_flex_data);
     index_flex_sensor = new FlexSensor(&index_flex_data);
-    middle_flex_sensor = new FlexSensor(&middle_flex_data);
+    // middle_flex_sensor = new FlexSensor(&middle_flex_data);
     pinky_flex_sensor = new FlexSensor(&pinky_flex_data);
 
     thumb_force_sensor = new ForceSensor(&thumb_force_data);
     index_force_sensor = new ForceSensor(&index_force_data);
 
     fc = new FuzzyController(&index_flex_value, &middle_flex_value, &pinky_flex_value, &thumb_force_value, &index_force_value);
+
+    pinMode(MOTOR_POWER_CUTOFF, OUTPUT);
+    digitalWrite(MOTOR_POWER_CUTOFF, HIGH);
+
+    pinMode(5, OUTPUT);
+    digitalWrite(5, HIGH);
+    pinMode(6, OUTPUT);
+    digitalWrite(6, HIGH);
 }
 
 int loop_counter = 0;
 
 void loop()
 {
-    servo.write(90);
+    servo.write(120);
 
     // thumb_flex_sensor->read();
     index_flex_sensor->read();
@@ -144,12 +154,12 @@ void loop()
     // thumb_force_sensor->read();
     // index_force_sensor->read();
 
-    index_flex_value = loop_counter;
-    loop_counter += 10;
-    if (loop_counter > 100)
-    {
-        loop_counter = 0;
-    }
+    // index_flex_value = loop_counter;
+    // loop_counter += 10;
+    // if (loop_counter > 100)
+    // {
+    //     loop_counter = 0;
+    // }
 
     float output = fc->getThumbOutput();
 
